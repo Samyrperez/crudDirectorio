@@ -1,0 +1,35 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+h1 {
+    text-align: center;
+}
+.top-bar {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+#buscador {
+    padding: 8px;
+    width: 300px;
+    margin-right: 10px;
+}
+#btnAgregar {
+    padding: 8px 15px;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+table, th, td {
+    border: 1px solid #ccc;
+}
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+th {
+    background-color: #f2f2f2;
+}
