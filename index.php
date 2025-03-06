@@ -12,27 +12,34 @@
 <body>
 
     <h1 id="titulo">Directorio</h1>
+    <div id="container">
 
-    <div class="top-bar">
-        <input type="text" id="buscador" placeholder="Buscar contacto...">
-        <button id="btnAgregar">Agregar Contacto</button>
-    </div>
+        <div class="top-bar">
+            <input type="text" id="buscador" placeholder="Buscar contacto...">
+            <button id="btnAgregar">Agregar Contacto</button>
+        </div>
 
-    <div id="lista">
-        <table id="tablaContactos">
+   
 
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Teléfono</th>
-                    <th>Oficio</th>
-                </tr>
-            </thead>
+        <div id="lista">
+            <table id="tablaContactos">
+    
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Teléfono</th>
+                        <th>Oficio</th>
+                    </tr>
+                </thead>
+                
+    
+                <tbody id="tablaBody">
+                    <!-- Aquí irán los contactos desde la BD -->
+                </tbody>
+            </table>
+        </div>
+        
 
-            <tbody id="tablaBody">
-                <!-- Aquí irán los contactos desde la BD -->
-            </tbody>
-        </table>
     </div>
 
     <script src="./js/crud.js"></script>
