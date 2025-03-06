@@ -18,7 +18,7 @@
         <button id="btnAgregar">Agregar Contacto</button>
     </div>
 
-    <div id="tabla">
+    <div id="lista">
         <table id="tablaContactos">
 
             <thead>
@@ -35,6 +35,7 @@
         </table>
     </div>
 
+    <script src="./js/crud.js"></script>
 
 
 </body>

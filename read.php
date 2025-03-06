@@ -1,20 +1,24 @@
 <?php
+header("Access-Control-Allow-Origin: *");
+header("Content-Type: application/json; charset=UTF-8");
 include "db.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    $nombre = $_GET["nombre"];
-    $telefono = $_GET["telefono"];
-    $email = $_GET["email"];
-    $profesion = $_GET["profesion"];
 
     $sql = "SELECT * FROM contactos ORDER BY nombre";
+    $result = $conexion->query($sql);
 
-    if ($conexion->query($sql) == TRUE) {
-        echo "Consulta exitosa";
-    } else {
-        echo "Error en la consulta:" . $conexion->error;
+    $contactos = [];
+
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $contactos[] = $row;
+        }
     }
 
+    echo json_encode($contactos);
 } else {
-    echo "error en la petición";
+    echo json_encode("error en la petición");
 }
+
+
