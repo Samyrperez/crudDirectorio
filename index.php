@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/crud.css">
+    <link rel="stylesheet" href="./css/crud.css?v=2<?php echo time();?>"> 
     <title>Directorio</title>
 </head>
 
@@ -18,8 +19,6 @@
             <input type="text" id="buscador" placeholder="Buscar contacto...">
             <button id="btnAgregar">Agregar Contacto</button>
         </div>
-
-   
 
         <div id="lista">
             <table id="tablaContactos">
@@ -42,7 +41,8 @@
 
     </div>
 
-    <script src="./js/crud.js"></script>
+    <script src="./js/crud.js?v=2"></script>
+
 
 
 </body>

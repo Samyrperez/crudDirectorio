@@ -1,0 +1,7 @@
+ID recibido: 5
+Solicitud recibida
+Intentando eliminar ID: 0
+Error: No se encontró el ID 0 en la base de datos
+Solicitud recibida
+Intentando eliminar ID: 0
+Error: No se encontró el ID 0 en la base de datos
