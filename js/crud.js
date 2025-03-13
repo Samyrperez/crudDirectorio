@@ -50,7 +50,7 @@ async function find(id) {
             <div class="header-btn">
                 <h2>Información de contacto</h2>
                 <div class="btns">
-                    <button id="btn-upDate">Editar</button>
+                    <button class="btn-upDate" data-id="${data.id}">Editar</button>
                     <button class="btn-delete" data-id="${data.id}">Eliminar</button>
                 </div>
             </div>
@@ -94,6 +94,12 @@ async function find(id) {
             }
             console.log(contactId)
         });
+        document.addEventListener("click", function (event) {
+            if (event.target.classList.contains("btn-upDate")) {
+                const contactID = event.target.getAttribute("data-id");
+                openEditForm(contactID);
+            }
+        });
 
     } catch (error) {
         console.log(error);
@@ -136,5 +142,89 @@ async function remove(id) {
     }
 }
 
+async function openEditForm(contactID) {
+    console.log("Abriendo formulario de edición para ID:", contactID);
+
+    // 🚀 1. Verificar si el contenedor ya existe, si no, crearlo dinámicamente
+    let editFormContainer = document.getElementById("editFormContainer");
+
+    if (!editFormContainer) {
+        editFormContainer = document.createElement("div");
+        editFormContainer.id = "editFormContainer";
+        document.body.appendChild(editFormContainer); // Agregarlo al cuerpo de la página o donde corresponda
+    }
+
+    // 🚀 2. Obtener los datos del contacto desde la base de datos
+    try {
+        const response = await fetch(`get_contact.php?id=${contactID}`);
+        const data = await response.json();
+
+        if (data.error) {
+            alert("Error: " + data.error);
+            return;
+        }
+
+        container.innerHTML = "";
+        // 🚀 3. Insertar el formulario en el contenedor
+        editFormContainer.innerHTML = `
+            <form id="editForm">
+                    <div class="containerFormEdit">
+                    <label>Nombre: <input type="text" id="editNombre" value="${data.nombre}" required></label>
+                    <br>
+                    <label>Teléfono: <input type="text" id="editTelefono" value="${data.telefono}" required></label>
+                    <br>
+                    <label>Email: <input type="email" id="editEmail" value="${data.email}" required></label>
+                    <br>
+                </div>
+                <div class="containerButttonForm">
+                    <button type="submit">Guardar Cambios</button>
+                    <button type="button" id="cancelEdit">Cancelar</button>
+                </div>
+            </form>
+        `;
+
+        // 🚀 4. Manejar el envío del formulario
+        document.getElementById("editForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+            updateContact(contactID);
+        });
+
+        // 🚀 5. Manejar el botón "Cancelar"
+        document.getElementById("cancelEdit").addEventListener("click", function () {
+            editFormContainer.innerHTML ="";
+            find(contactID); // Volver a mostrar los datos del contacto
+        });
+
+    } catch (error) {
+        console.error("Error al obtener los datos del contacto:", error);
+        alert("Hubo un problema al cargar los datos.");
+    }
+}
+
+
+
+
+
+async function updateContact(id) {
+    const nombre = document.getElementById("editNombre").value;
+    const telefono = document.getElementById("editTelefono").value;
+    const email = document.getElementById("editEmail").value;
+
+    const response = await fetch("update.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, nombre, telefono, email })
+    });
+
+    const data = await response.json();
+    console.log(data);
+
+    if (data.message) {
+        alert(data.message);
+        location.reload(); // Recargar la página con los datos actualizados
+    } else {
+        alert("Error: " + data.error);
+    }
+}
 
 
