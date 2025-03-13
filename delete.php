@@ -1,8 +1,11 @@
 <?php
-header("Content-Type: application/json"); // Asegurar que la respuesta sea JSON
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+header("Content-Type: application/json"); // Asegurar respuesta JSON
+
 include 'db.php';
 
-// Leer los datos JSON recibidos
+// Leer JSON recibido
 $data = json_decode(file_get_contents("php://input"));
 
 if (!$data || !isset($data->id)) {
@@ -10,14 +13,19 @@ if (!$data || !isset($data->id)) {
     exit;
 }
 
-$id = intval($data->id); 
+$id = intval($data->id);
 
-// Preparar la consulta
+if ($id <= 0) {
+    echo json_encode(["error" => "ID inválido"]);
+    exit;
+}
+
+// Preparar y ejecutar la consulta DELETE
 $stmt = $conexion->prepare("DELETE FROM contactos WHERE id = ?");
 $stmt->bind_param("i", $id);
+$stmt->execute();
 
-// Ejecutar la consulta
-if ($stmt->execute() && $stmt->affected_rows > 0) {
+if ($stmt->affected_rows > 0) {
     echo json_encode(["message" => "Contacto eliminado"]);
 } else {
     echo json_encode(["error" => "No se encontró el contacto con ID: " . $id]);
@@ -26,4 +34,7 @@ if ($stmt->execute() && $stmt->affected_rows > 0) {
 // Cerrar conexión
 $stmt->close();
 $conexion->close();
-?>
+exit; // Finaliza el script
+
+
+

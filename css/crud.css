@@ -33,3 +33,7 @@ th, td {
 th {
     background-color: #f2f2f2;
 }
+#nameTable {
+    cursor: pointer;
+    color: rgb(90, 90, 231);
+}
