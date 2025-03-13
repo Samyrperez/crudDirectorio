@@ -47,23 +47,42 @@ async function find(id) {
 
         container.innerHTML = "";
         container.innerHTML = `
-            <div class="title-btn">
-                <h2>Editar contacto</h2>
-                <button id="btn-upDate">Actualizar</button>
-                <button class="btn-delete" data-id="${data.id}">Eliminar</button>
+            <div class="header-btn">
+                <h2>Información de contacto</h2>
+                <div class="btns">
+                    <button id="btn-upDate">Editar</button>
+                    <button class="btn-delete" data-id="${data.id}">Eliminar</button>
+                </div>
             </div>
-            <div class="data"> 
-                <p>Nombre: ${data.nombre}</p>
-                <p>Teléfono: ${data.telefono}</p>
-                <p>Email: ${data.email}</p>
-                <p>Profesión: ${data.profesion}</p>
+            <div class="data">
+
+                <table id="tableInfoUser">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Teléfono</th>
+                            <th>Email</th>
+                            <th>Oficio</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                        <td>${data.nombre}</td>
+                        <td>${data.telefono}</td>
+                        <td>${data.email}</td>
+                        <td>${data.profesion}</td>
+                    </tr>
+                    </tbody>
+
+                </table>
             </div>
-            <button id="volver">Volver</button>
+            <button id="return">Volver</button>
             
         `;
 
         // Selecciono el botón y le agrego el evento
-        document.getElementById("volver").addEventListener("click", () => {
+        document.getElementById("return").addEventListener("click", () => {
             location.reload(); // Recarga la página para volver al estado original
         });
 
@@ -76,8 +95,6 @@ async function find(id) {
             console.log(contactId)
         });
 
-        
-
     } catch (error) {
         console.log(error);
     }
@@ -89,7 +106,7 @@ async function find(id) {
 async function remove(id) {
     console.log("Intentando eliminar ID:", id); 
 
-    if (!id || isNaN(id)) {
+    if (!id || isNaN(id)) { // isNaN(id) → Comprueba si el id no es un número.
         alert("Error: ID inválido");
         return;
     }
@@ -98,9 +115,10 @@ async function remove(id) {
         const response = await fetch("delete.php", {
             method: "POST",
             headers: {
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", // indica que el cuerpo de la solicitud está en formato JSON
             },
-            body: JSON.stringify({ id: parseInt(id) }),
+            body: JSON.stringify({ id: parseInt(id) }), // JSON.stringify({ id: parseInt(id) })convierte un objeto de JavaScript a una cadena JSON.
+            //{ id: parseInt(id) } crea un objeto con una clave id, cuyo valor es el número entero resultante de parseInt(id).
         });
 
         const data = await response.json();
