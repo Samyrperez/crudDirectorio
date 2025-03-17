@@ -3,6 +3,13 @@ document.getElementById("btnAgregar").addEventListener("click", function () {
     openCreateForm();
 });
 
+function showContainer() {
+    document.getElementById("container").style.display = "block";
+}
+
+function hideContainer() {
+    document.getElementById("container").style.display = "none";
+}
 
 async function list() {
     const lista = document.getElementById("tablaBody");
@@ -178,6 +185,7 @@ async function openEditForm(contactID) {
         }
 
         container.innerHTML = "";
+        hideContainer();
         // 🚀 3. Insertar el formulario en el contenedor
         editFormContainer.innerHTML = `
             <form id="editForm">
@@ -208,6 +216,7 @@ async function openEditForm(contactID) {
         document.getElementById("cancelEdit").addEventListener("click", function () {
             editFormContainer.innerHTML = "";
             find(contactID); // Volver a mostrar los datos del contacto
+            showContainer();
         });
 
     } catch (error) {
@@ -255,6 +264,7 @@ async function openCreateForm() {
     }
 
     container.innerHTML = "";
+    hideContainer();
     createFormContainer.innerHTML = `
         <form id="createForm">
             <div class="containerFormCreate">

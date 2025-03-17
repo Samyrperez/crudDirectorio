@@ -5,7 +5,7 @@ header("Content-Type: application/json");
 
 include 'db.php';
 
-// 🔥 1. Recibir y decodificar JSON correctamente
+// 1. Recibir y decodificar JSON correctamente
 $data = json_decode(file_get_contents("php://input"), true);
 
 // 🔍 2. Verifica si los datos llegan correctamente
