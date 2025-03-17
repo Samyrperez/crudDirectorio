@@ -279,3 +279,8 @@ button[type="submit"]:hover, #btnGuardar:hover {
         width: 100%;
     }
 }
+
+#tablaBody tr td {
+    text-align: center;
+}
+

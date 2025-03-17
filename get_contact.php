@@ -30,4 +30,4 @@ if ($row = $result->fetch_assoc()) {
 // Cerrar conexión
 $stmt->close();
 $conexion->close();
-?>
+

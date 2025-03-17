@@ -1,3 +1,6 @@
+import {searchContacts } from "./seacrh.js"
+import {list} from "./list.js"
+import { find } from "./find.js";
 
 document.getElementById("btnAgregar").addEventListener("click", function () {
     openCreateForm();
@@ -11,116 +14,23 @@ function hideContainer() {
     document.getElementById("container").style.display = "none";
 }
 
-async function list() {
-    const lista = document.getElementById("tablaBody");
+// Capturar la búsqueda desde el input
+document.getElementById("buscador").addEventListener("input", function () {
+    const valor = this.value.trim();
 
-
-    try {
-        const response = await fetch("read.php");
-        const data = await response.json();
-        // console.log(data);
-
-        lista.innerHTML = "";
-
-        data.forEach(contacto => {
-            const row = `
-                <tr>
-                    <td>
-                    <span id="nameTable" onclick="find(${contacto.id})">
-                    ${contacto.nombre}
-                    </span>
-                    </td>
-                    <td>${contacto.telefono}</td>
-                    <td>${contacto.profesion}</td>
-                </tr>
-                `;
-            lista.innerHTML += row;
-        });
-
-
-    } catch (error) {
-        console.log(error);
+    if (valor.length >= 1) {
+        searchContacts(valor);
+    } else {
+        console.log("Escribe al menos 3 caracteres para buscar");
     }
 
-
-}
+    if(valor.length === 0){
+        list();
+    }
+});
 
 list();
 
-async function find(id) {
-
-    try {
-        const response = await fetch("find.php?id=" + id);
-        const data = await response.json();
-        console.log(data);
-
-        const container = document.getElementById("container");
-
-        container.innerHTML = "";
-        container.innerHTML = `
-            <div class="header-btn">
-                <h2>Información de contacto</h2>
-                <div class="btns">
-                    <button class="btn-upDate" data-id="${data.id}">Editar</button>
-                    <button class="btn-delete" data-id="${data.id}">Eliminar</button>
-                </div>
-            </div>
-            <div class="data">
-
-                <table id="tableInfoUser">
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Teléfono</th>
-                            <th>Email</th>
-                            <th>Oficio</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        <tr>
-                            <td>${data.nombre}</td>
-                            <td>${data.telefono}</td>
-                            <td>${data.email}</td>
-                            <td>${data.profesion}</td>
-                        </tr>
-                    </tbody>
-
-                </table>
-            </div>
-            <button id="return">Volver</button>
-            
-        `;
-
-        // Selecciono el botón y le agrego el evento
-        document.getElementById("return").addEventListener("click", () => {
-            location.reload(); // Recarga la página para volver al estado original
-        });
-
-        // Agregar evento al botón "Eliminar"
-        document.querySelector(".btn-delete").addEventListener("click", function () {
-            const contactId = this.getAttribute("data-id");
-            if (confirm("¿Estás seguro de eliminar este contacto?")) {
-                remove(contactId);
-            }
-            console.log(contactId)
-        });
-        document.addEventListener("click", function (event) {
-            if (event.target.classList.contains("btn-upDate")) {
-                // Se verifica si el elemento clicado (event.target) tiene la clase "btn-upDate", si la tiene devuelve true
-                const contactID = event.target.getAttribute("data-id");
-                // Se obtiene el valor del atributo data-id del botón que fue clicado
-                openEditForm(contactID);
-                // Se llama a la función openEditForm(contactID), enviando el ID del contacto.
-                // sta función se encarga de cargar el formulario con la información del contacto seleccionado.
-            }
-        });
-
-    } catch (error) {
-        console.log(error);
-    }
-
-}
 
 // ---------------------------------------------------
 // Función para eliminar un contacto por ID

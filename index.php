@@ -39,8 +39,9 @@
         
 
     </div>
+    
 
-    <script src="./js/crud.js?v=2"></script>
+    <script type="module" src="./js/crud.js?v=2"></script>
 
 
 
