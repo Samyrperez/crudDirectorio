@@ -1,16 +1,15 @@
 import {searchContacts } from "./seacrh.js"
-import {list} from "./list.js"
-import { find } from "./find.js";
+
 
 document.getElementById("btnAgregar").addEventListener("click", function () {
     openCreateForm();
 });
 
-function showContainer() {
+export function showContainer() {
     document.getElementById("container").style.display = "block";
 }
 
-function hideContainer() {
+export function hideContainer() {
     document.getElementById("container").style.display = "none";
 }
 
@@ -29,12 +28,122 @@ document.getElementById("buscador").addEventListener("input", function () {
     }
 });
 
+
+
+
+export async function list() {
+    const lista = document.getElementById("tablaBody");
+
+
+    try {
+        const response = await fetch("read.php");
+        const data = await response.json();
+        // console.log(data);
+
+        lista.innerHTML = "";
+
+        data.forEach(contacto => {
+            const row = `
+                <tr>
+                    <td>
+                    <span class="nameTable" data-id="${contacto.id}">
+                        ${contacto.nombre}
+                    </span>
+                    </td>
+                    <td>${contacto.telefono}</td>
+                    <td>${contacto.profesion}</td>
+                </tr>
+                `;
+            lista.innerHTML += row;
+        });
+        
+
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 list();
 
+export async function find(id) {
+
+    try {
+        const response = await fetch("find.php?id=" + id);
+        const data = await response.json();
+        console.log(data);
+
+        const container = document.getElementById("container");
+
+        container.innerHTML = "";
+        container.innerHTML = `
+            <div class="header-btn">
+                <h2>Información de contacto</h2>
+                <div class="btns">
+                    <button class="btn-upDate" data-id="${data.id}">Editar</button>
+                    <button class="btn-delete" data-id="${data.id}">Eliminar</button>
+                </div>
+            </div>
+            <div class="data">
+
+                <table id="tableInfoUser">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Teléfono</th>
+                            <th>Email</th>
+                            <th>Oficio</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>${data.nombre}</td>
+                            <td>${data.telefono}</td>
+                            <td>${data.email}</td>
+                            <td>${data.profesion}</td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
+            <button id="return">Volver</button>
+            
+        `;
+
+        // Selecciono el botón y le agrego el evento
+        document.getElementById("return").addEventListener("click", () => {
+            location.reload(); // Recarga la página para volver al estado original
+        });
+
+        // Agregar evento al botón "Eliminar"
+        document.querySelector(".btn-delete").addEventListener("click", function () {
+            const contactId = this.getAttribute("data-id");
+            if (confirm("¿Estás seguro de eliminar este contacto?")) {
+                remove(contactId);
+            }
+            console.log(contactId)
+        });
+        document.addEventListener("click", function (event) {
+            if (event.target.classList.contains("btn-upDate")) {
+                // Se verifica si el elemento clicado (event.target) tiene la clase "btn-upDate", si la tiene devuelve true
+                const contactID = event.target.getAttribute("data-id");
+                // Se obtiene el valor del atributo data-id del botón que fue clicado
+                openEditForm(contactID);
+                // Se llama a la función openEditForm(contactID), enviando el ID del contacto.
+                // esta función se encarga de cargar el formulario con la información del contacto seleccionado.
+            }
+        });
+
+    } catch (error) {
+        console.log(error);
+    }
+
+}
 
 // ---------------------------------------------------
 // Función para eliminar un contacto por ID
-async function remove(id) {
+export async function remove(id) {
     console.log("Intentando eliminar ID:", id);
 
     if (!id || isNaN(id)) { // isNaN(id) → Comprueba si el id no es un número.
@@ -69,7 +178,7 @@ async function remove(id) {
 
 // ---------------------------------------------------
 // Función para crear el formulario de edición con id del contacto que se quiere editar
-async function openEditForm(contactID) {
+export async function openEditForm(contactID) {
     console.log("Abriendo formulario de edición para ID:", contactID);
 
     // 🚀 1. Verifico si el contenedor ya existe, si no, crearlo dinámicamente
@@ -136,7 +245,7 @@ async function openEditForm(contactID) {
 }
 
 // ---------------------------------------------------
-async function updateContact(id) {
+export async function updateContact(id) {
     const nombre = document.getElementById("editNombre").value;
     const telefono = document.getElementById("editTelefono").value;
     const email = document.getElementById("editEmail").value;
@@ -161,7 +270,7 @@ async function updateContact(id) {
 
 
 // --------------------------------------------------
-async function openCreateForm() {
+export async function openCreateForm() {
     console.log("Abriendo formulario de creación de contacto");
 
     let createFormContainer = document.getElementById("createFormContainer");
@@ -235,5 +344,36 @@ async function openCreateForm() {
     });
 }
 
+export async function searchContacts(nombre) {
+    const lista = document.getElementById("tablaBody");
+
+    if (!nombre || typeof nombre !== "string") return; // Evita errores si el valor es null o undefined
+
+    try {
+        const response = await fetch(`search.php?nombre=${encodeURIComponent(nombre)}`);
+        const data = await response.json();
+        // console.log(data);
+
+        lista.innerHTML = "";
+        if (!Array.isArray(data) || data.length === 0) {
+            lista.innerHTML = `<tr><td colspan="3" >No se encontraron contactos</td></tr>`;
+            return;
+        }
+
+        data.forEach(contacto => {
+            lista.innerHTML += `
+                <tr>
+                    <td>${contacto.nombre}</td>
+                    <td>${contacto.telefono}</td>
+                    <td>${contacto.profesion}</td>
+                </tr>
+            `;
+        });
+
+
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 
