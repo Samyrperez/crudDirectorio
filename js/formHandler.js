@@ -1,13 +1,13 @@
 import { find, updateContact } from "./api.js";
 import { showContainer, hideContainer } from "./ui.js";
 
-// Función para crear el formulario de edición con id del contacto que se quiere editar
+// Función para crear el formulario de edición con id del contacto que quiero editar
 export async function openEditForm(contactID) {
     console.log("Abriendo formulario de edición para ID:", contactID);
 
     // 🚀 1. Verifico si el contenedor ya existe, si no, crearlo dinámicamente
     let editFormContainer = document.getElementById("editFormContainer");
-    let container = document.getElementById("container");
+    // let container = document.getElementById("container");
 
     if (!editFormContainer) {
         editFormContainer = document.createElement("div");
@@ -27,7 +27,7 @@ export async function openEditForm(contactID) {
             return;
         }
 
-        container.innerHTML = "";
+        // container.innerHTML = "";
         hideContainer();
         // 🚀 3. Insertar el formulario en el contenedor
         editFormContainer.innerHTML = `
@@ -49,6 +49,7 @@ export async function openEditForm(contactID) {
             </form>
         `;
 
+
         // 4. Manejo el envío del formulario
         document.getElementById("editForm").addEventListener("submit", function (event) {
             event.preventDefault();
@@ -68,11 +69,12 @@ export async function openEditForm(contactID) {
     }
 }
 
+// Crear Formulario para crear contacto 
 export async function openCreateForm() {
     console.log("Abriendo formulario de creación de contacto");
 
     let createFormContainer = document.getElementById("createFormContainer");
-    let container = document.getElementById("container");
+    // let container = document.getElementById("container");
 
     if (!createFormContainer) {
         createFormContainer = document.createElement("div");
@@ -80,7 +82,7 @@ export async function openCreateForm() {
         document.body.appendChild(createFormContainer);
     }
 
-    container.innerHTML = "";
+    // container.innerHTML = "";
     hideContainer();
     createFormContainer.innerHTML = `
         <form id="createForm">
@@ -104,6 +106,7 @@ export async function openCreateForm() {
     document.getElementById("createForm").addEventListener("submit", async function (event) {
         console.log("Guardando contacto...");
 
+        // Obtengo los valores ingresados
         const nuevoContacto = {
             nombre: document.getElementById("createNombre").value,
             telefono: document.getElementById("createTelefono").value,
@@ -115,7 +118,7 @@ export async function openCreateForm() {
             const response = await fetch("create.php", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(nuevoContacto)
+                body: JSON.stringify(nuevoContacto) // convierte un objeto de JavaScript a una cadena JSON.
             });
 
             const data = await response.json();

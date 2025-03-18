@@ -1,4 +1,6 @@
 import { openEditForm } from "./formHandler.js";
+
+//  LISTAR
 export async function list() {
     const lista = document.getElementById("tablaBody");
 
@@ -25,7 +27,7 @@ export async function list() {
             lista.innerHTML += row;
         });
         document.getElementById("tablaBody").addEventListener("click", function(event) {
-            const target = event.target.closest(".nameTable"); // Busca el elemento más cercano con la clase "nameTable"
+            const target = event.target.closest(".nameTable"); // .closest(".nameTable") Busca el elemento más cercano con la clase "nameTable"
             if (target) {
                 const contactId = target.getAttribute("data-id");
                 find(contactId);
@@ -39,10 +41,11 @@ export async function list() {
     }
 }
 
+// Buscar a traves del id
 export async function find(id) {
 
     try {
-        const response = await fetch("find.php?id=" + id);
+        const response = await fetch("find.php?id=" + id); // concatena el ID del contacto en la URL.
         const data = await response.json();
         console.log(data);
 
@@ -89,7 +92,7 @@ export async function find(id) {
             location.reload(); // Recarga la página para volver al estado original
         });
 
-        // Agregar evento al botón "Eliminar"
+        // Evento para el botón "Eliminar"
         document.querySelector(".btn-delete").addEventListener("click", function () {
             const contactId = this.getAttribute("data-id");
             if (confirm("¿Estás seguro de eliminar este contacto?")) {
@@ -97,6 +100,8 @@ export async function find(id) {
             }
             console.log(contactId)
         });
+
+        // Evento para abrir el formulario de actualizar contacto
         document.addEventListener("click", function (event) {
             if (event.target.classList.contains("btn-upDate")) {
                 // Se verifica si el elemento clicado (event.target) tiene la clase "btn-upDate", si la tiene devuelve true
@@ -147,12 +152,15 @@ export async function remove(id) {
     }
 }
 
+
 export async function updateContact(id) {
+    // Obtengo los valores de los campos del formulario de edición.
     const nombre = document.getElementById("editNombre").value;
     const telefono = document.getElementById("editTelefono").value;
     const email = document.getElementById("editEmail").value;
     const profesion = document.getElementById("editProfesion").value;
 
+    
     const response = await fetch("update.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

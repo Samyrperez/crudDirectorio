@@ -4,13 +4,18 @@ export async function searchContacts(nombre) {
     if (!nombre || typeof nombre !== "string") return; // Evita errores si el valor es null o undefined
 
     try {
-        const response = await fetch(`search.php?nombre=${encodeURIComponent(nombre)}`);
+        const response = await fetch(`search.php?nombre=${encodeURIComponent(nombre)}`); // encodeURIComponent(nombre) codifica el texto para evitar errores con caracteres especiales (como espacios o tildes).
         const data = await response.json();
         // console.log(data);
 
         lista.innerHTML = "";
         if (!Array.isArray(data) || data.length === 0) {
-            lista.innerHTML = `<tr><td colspan="3" >No se encontraron contactos</td></tr>`;
+            lista.innerHTML = `
+            <tr>
+                <td id="span-NC" colspan="3">
+                    No se encontraron contactos
+                </td>
+            </tr>`;
             return;
         }
 
