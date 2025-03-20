@@ -87,9 +87,10 @@ export async function find(id) {
             
         `;
 
-        // Selecciono el botón y le agrego el evento
+        // Button Regresar
         document.getElementById("return").addEventListener("click", () => {
             location.reload(); // Recarga la página para volver al estado original
+
         });
 
         // Evento para el botón "Eliminar"

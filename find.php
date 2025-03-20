@@ -12,13 +12,13 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $stmt->bind_param("i", $id); // Asocia el valor de $id a la consulta preparada.
 
         if ($stmt->execute()) {
-            $result = $stmt->get_result(); //Resultado de la consulta
+            $result = $stmt->get_result();
     
             // Verifico si se encontró el contacto
             if ($row = $result->fetch_assoc()) { // Obtengo la fila de la base de datos como un array asociativo .
                 echo json_encode($row); // Si el contacto existe, se devuelve en formato JSON.
             } else {
-                echo json_encode(["error" => "Contacto no encontrado"]); // Si el idno existe, se devuelve un mensaje de error en JSON.
+                echo json_encode(["error" => "Contacto no encontrado"]); // Si el id no existe, se devuelve un mensaje de error en JSON.
             }
 
         } else {

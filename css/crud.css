@@ -200,6 +200,7 @@ label {
     display: flex;
     flex-direction: column;
     font-size: 1rem;
+    text-align: left;
 }
 
 input {
@@ -251,6 +252,10 @@ button[type="submit"], #btnGuardar {
 
 button[type="submit"]:hover, #btnGuardar:hover {
     background: #219150;
+}
+
+button {
+    margin: 5px 20px;
 }
 
 #cancelEdit, #cancelCreate {
